@@ -1,4 +1,4 @@
-let {db, Vegetable} = require("./models.js");
+let {db, Vegetable, Gardener} = require("./models.js");
 
 
 db.sync().then(() => {
@@ -26,6 +26,24 @@ Promise.all(vegetables)
     console.log(err);
   });
 
+
+const gardenerData = [
+  {name: 'alice', age: 83}
+  // {name: 'q', age: 25}
+]
+// gardener.map(gardener => Gardener.create(gardener))
+
+Gardener.bulkCreate(gardenerData).then(() => {
+  return Gardener.findAll();
+}).then(gard => {
+  console.log(gard)
+})
+
+Promise.all([Gardener.bulkCreate(gardenerData).then(() => {
+  return Gardener.findAll();
+}).then(gard => {
+  console.log(gard)
+})])
 
 // .finally(() => { // only if using a version of node WITH `finally`
 //     db.close()
