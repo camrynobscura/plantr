@@ -1,6 +1,6 @@
-let sequelize = require("sequelize");
+let Sequelize = require("sequelize");
 const db = new Sequelize("postgres://localhost:5432/plantr", {
-  // logging: false;
+  logging: false
 })
 
 const Gardener = db.define("gardener", {
@@ -33,4 +33,14 @@ const Vegetable = db.define("vegetable", {
   }
 })
 
-module.exports = db;
+// one-to-one
+Plot.belongsTo(Gardener);
+
+// many-to-many
+Vegetable.belongsToMany(Plot, {through: 'plot/vegetable'});
+Plot.belongsToMany(Vegetable, {through: 'plot/vegetable'});
+
+// one-to-one
+Gardener.belongsTo(Vegetable, {as: 'favoriteVegetable'})
+
+module.exports = {db, Vegetable, Plot, Gardener};
